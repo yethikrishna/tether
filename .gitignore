@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.key
+.wrangler/
+dist-demo/
+
+__pycache__/
+*.py[cod]
+
+# Local visual QA captures are not source or public assets.
+screenshots/

@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tether-oauth-handoff-20261018",
+  "account_id": "cc941d8f8189fbdf6dfac90310b8d896",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-16",
+  "workers_dev": true,
+  "observability": {
+    "enabled": false,
+    "logs": { "enabled": false, "invocation_logs": false },
+    "traces": { "enabled": false }
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["HandoffSession"] }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "HANDOFF", "class_name": "HandoffSession" }]
+  }
+}

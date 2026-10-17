@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles/tokens.css"><link rel="stylesheet" href="./pip.css"><style>
+  body { margin:0; background:#06080e; font-family:system-ui; color:#aab;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:18px; padding:28px; }
+  .cell { text-align:center; }
+  .cell span { font-size:12px; letter-spacing:.08em; display:block; margin-top:8px; }
+  #still .pip { --px:0 !important; }
+</style></head><body>
+<script type="module">
+  import { Pip } from './pip.js';
+  const states = ['idle','curious','annoyed','angry','needs_you','success_soft','sleep','notice'];
+  for (const s of states) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    document.body.appendChild(cell);
+    const p = new Pip(cell, { size: 110 });
+    p.setState(s);
+    const l = document.createElement('span'); l.textContent = s; cell.appendChild(l);
+  }
+  // reduced-motion / still variant
+  const cell = document.createElement('div');
+  cell.className = 'cell'; cell.id = 'still';
+  document.body.appendChild(cell);
+  localStorage.setItem('tether:pip-still','1');
+  const still = new Pip(cell, { size: 110 });
+  still.setState('needs_you');
+  const l = document.createElement('span'); l.textContent = 'still (needs_you)'; cell.appendChild(l);
+  window.__ready = true;
+</script></body></html>

@@ -1,0 +1,24 @@
+{
+  "name": "tether-fo-companion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/domain.js && node --check src/store.js && node --check src/api.js && node --check src/server.js && node --check src/oauth-provider.js && node --check src/fo-client.js && node --check src/oauth-handoff.js && node --check cloudflare/worker.js && node --check scripts/connect-fo.js",
+    "start": "node src/server.js",
+    "build:demo": "node scripts/build-demo.mjs",
+    "test:device": "python3 -m unittest discover -s device -p \"test_*.py\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "wrangler": "^4.151.1"
+  },
+  "license": "MIT"
+}

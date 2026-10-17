@@ -1,0 +1,179 @@
+/* ============================================================
+   TETHER base — reset, page atmosphere, shared primitives
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--text-0);
+  background: var(--ink-0);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- atmosphere: aurora wash + grain. Purposeful, not decoration:
+       the wash is where the "tether line" light comes from. --- */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 42% at 12% -6%, rgba(87, 224, 196, 0.075), transparent 62%),
+    radial-gradient(52% 40% at 88% 108%, rgba(124, 140, 232, 0.07), transparent 60%),
+    radial-gradient(40% 30% at 78% -10%, rgba(242, 169, 80, 0.045), transparent 65%),
+    var(--ink-0);
+}
+.atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.2; margin: 0; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+input, textarea, select { font: inherit; color: inherit; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+:focus-visible {
+  outline: 2px solid var(--st-notice);
+  outline-offset: 2px;
+  border-radius: var(--r-s);
+}
+::selection { background: rgba(124, 199, 232, 0.28); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
+
+/* --- mono microcopy: timestamps, ids, diagnostics --- */
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.01em;
+  color: var(--text-2);
+}
+
+/* --- honest status chip: color + label, never color alone --- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--chip-fg, var(--text-1));
+  background: color-mix(in srgb, var(--chip, var(--st-idle)) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--chip, var(--st-idle)) 30%, transparent);
+  white-space: nowrap;
+}
+.chip::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--chip, var(--st-idle));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--chip, var(--st-idle)) 70%, transparent);
+}
+.chip--pulse::before { animation: chipPulse 1.8s var(--ease-out) infinite; }
+@keyframes chipPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.45); opacity: 0.55; }
+}
+
+/* --- buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  letter-spacing: 0.01em;
+  background: var(--ink-3);
+  border: 1px solid var(--ink-line-strong);
+  transition: transform var(--t-fast) var(--ease-spring),
+              background var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover { background: #1d2438; }
+.btn:active { transform: scale(0.965); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.btn--primary {
+  background: linear-gradient(160deg, #eef3ff, #c8d6f2);
+  color: #0a0e18;
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(150, 180, 240, 0.22), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.btn--primary:hover { background: linear-gradient(160deg, #ffffff, #d5e1f8); }
+
+.btn--ghost { background: transparent; border-color: var(--ink-line); }
+.btn--ghost:hover { background: rgba(255,255,255,0.04); }
+
+.btn--danger-quiet {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--st-danger) 32%, transparent);
+  color: var(--st-danger);
+}
+
+/* --- solid card (long-form text always lives here, never on glass) --- */
+.card {
+  background: linear-gradient(180deg, var(--ink-2), #0e1322);
+  border: 1px solid var(--ink-line);
+  border-radius: var(--r-l);
+  box-shadow: var(--shadow-1);
+}
+
+/* --- section header with thread rule --- */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin: 0 0 var(--sp-3);
+}
+.section-head h2 {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+.section-head .thread-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rule-color, var(--ink-line-strong)), transparent);
+  border-radius: 1px;
+}
+.section-head .count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--text-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

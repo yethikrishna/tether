@@ -1,0 +1,121 @@
+/* ============================================================
+   The Tether Island — a persistent presence pill.
+   Honest web analogue of a live-activity island: always on
+   screen, expands on real state changes, never claims to be
+   native OS UI.
+   ============================================================ */
+
+.island {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 70;
+  min-width: 176px;
+  max-width: min(93vw, 460px);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-radius 340ms var(--ease-spring),
+              box-shadow 340ms var(--ease-out),
+              min-width 340ms var(--ease-spring);
+  /* state accent flows to the rim */
+  --island-accent: var(--st-idle);
+  border-color: color-mix(in srgb, var(--island-accent) 26%, var(--glass-edge)) !important;
+}
+.island:focus-visible { outline-offset: 3px; }
+
+.island-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px 6px 8px;
+}
+
+.island .pip { flex: none; }
+
+.island-label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.island-sub {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.island-dot {
+  flex: none;
+  width: 7px; height: 7px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--island-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--island-accent) 80%, transparent);
+}
+.island-dot--pulse { animation: chipPulse 1.8s var(--ease-out) infinite; }
+
+/* ---------- expanded ---------- */
+.island-expanded-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 380ms var(--ease-spring), opacity 240ms var(--ease-out);
+}
+.island-expanded-content > div { overflow: hidden; }
+
+.island.is-open {
+  border-radius: var(--r-xl);
+  min-width: min(93vw, 380px);
+  box-shadow: var(--shadow-glass), 0 24px 60px rgba(0,0,0,0.5);
+}
+.island.is-open .island-expanded-content {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.island-detail {
+  padding: 2px 18px 16px 18px;
+}
+.island-detail-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin: 2px 0 2px;
+}
+.island-detail-copy {
+  font-size: var(--fs-small);
+  color: var(--text-1);
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.island-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.island-actions .btn { padding: 8px 16px; font-size: var(--fs-small); }
+
+/* state accents */
+.island[data-mood="thinking"]   { --island-accent: var(--st-thinking); }
+.island[data-mood="needs_you"]  { --island-accent: var(--st-needs); }
+.island[data-mood="notice"]     { --island-accent: var(--st-notice); }
+.island[data-mood="success_soft"] { --island-accent: var(--st-success); }
+.island[data-mood="uncertain"]  { --island-accent: var(--st-uncertain); }
+.island[data-mood="sleep"]      { --island-accent: var(--st-sleep); }
+
+/* arrival: the island "lands" once on boot */
+.island.is-landing { animation: islandLand 700ms var(--ease-spring) 1; }
+@keyframes islandLand {
+  from { translate: -50% -140%; opacity: 0; }
+  to { translate: -50% 0; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island, .island-expanded-content { transition: none; }
+}

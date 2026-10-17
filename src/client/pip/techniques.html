@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../styles/tokens.css"><link rel="stylesheet" href="./pip.css">
+<style>
+  body { margin:0; background:#06080e; color:#aab; font-family:system-ui; padding:26px; }
+  h2 { color:#dfe6f5; font-size:14px; letter-spacing:.12em; text-transform:uppercase; margin:26px 0 10px; font-weight:600;}
+  .row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+  .cell { text-align:center; }
+  .cell span { font-size:11px; letter-spacing:.08em; display:block; margin-top:6px; }
+  .pip { --px:0 !important; } /* still sheet */
+</style></head><body>
+<h2>Pip - one character, three renderings - css/svg (shipped) - canvas 2d - pixel art</h2>
+<div class="row" id="cssrow"></div>
+<div class="row" id="canvasrow"></div>
+<div class="row" id="pixelrow"></div>
+<script type="module">
+  localStorage.setItem('tether:pip-still','1');
+  const { Pip } = await import('./pip.js');
+  const { canvasPip, pixelPip } = await import('./pip-canvas.js');
+  const states = ['idle','curious','needs_you','success_soft','annoyed','angry','uncertain','sleep','notice','thinking'];
+  for (const s of states) {
+    const a = document.createElement('div'); a.className='cell'; cssrow.appendChild(a);
+    const p = new Pip(a, { size: 92 }); p.setState(s);
+    const la = document.createElement('span'); la.textContent = s; a.appendChild(la);
+    const b = document.createElement('div'); b.className='cell'; canvasrow.appendChild(b);
+    canvasPip(b, { size: 92, state: s });
+    const lb = document.createElement('span'); lb.textContent = s; b.appendChild(lb);
+    const c = document.createElement('div'); c.className='cell'; pixelrow.appendChild(c);
+    pixelPip(c, { size: 92, state: s });
+    const lc = document.createElement('span'); lc.textContent = s; c.appendChild(lc);
+  }
+  window.__ready = true;
+</script></body></html>

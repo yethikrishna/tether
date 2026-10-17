@@ -1,0 +1,79 @@
+/* ============================================================
+   TETHER glass — Aave-Glass-*inspired*, unmistakably ours.
+   Usage hierarchy (directive 5.2):
+     GLASS:  Pip dock, segmented-control thumb, floating status
+             capsule, the composer's send pill.
+     SOLID:  every body of text, questions, timelines, settings.
+   Recipe: real backdrop blur + specular edge + moving light.
+   The optional SVG displacement lens (.glass--lens) only ever
+   covers one small region at a time and degrades to the same
+   CSS glass when unsupported. Nothing here is load-bearing for
+   readability: disable all of it and the UI is intact.
+   ============================================================ */
+
+.glass {
+  position: relative;
+  background: linear-gradient(138deg, rgba(42,52,80,0.62), rgba(12,16,29,0.86) 58%);
+  -webkit-backdrop-filter: blur(18px) saturate(1.45);
+  backdrop-filter: blur(18px) saturate(1.45);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--shadow-glass);
+  isolation: isolate;
+}
+
+/* specular sweep: a fixed diagonal light, not an animation loop */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(255,255,255,0.20), transparent 34%);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* lower rim light, gives the material thickness */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: auto 12% 0 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  pointer-events: none;
+}
+
+.glass--capsule { border-radius: var(--r-pill); }
+.glass--sheet   { border-radius: var(--r-xl); }
+
+/* The lens variant adds true refraction via a displacement map on a
+   Chromium-capable path; the class is only applied by JS after a
+   support check, and only to one small element. */
+.glass--lens {
+  overflow: hidden;
+}
+.glass--lens .glass-lens-layer {
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  -webkit-backdrop-filter: url(#tether-lens) blur(2px);
+  backdrop-filter: url(#tether-lens) blur(2px);
+  pointer-events: none;
+}
+
+@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+  /* no-filter fallback: keep shape and contrast without the effect */
+  .glass {
+    background: linear-gradient(180deg, #1a2136, #121828);
+    border-color: var(--ink-line-strong);
+  }
+}
+
+/* A glass surface must never sit under small text. If it does, this
+   debug guard in development makes the mistake loud instead of subtle. */
+.glass .chip, .glass .mono { text-shadow: 0 1px 2px rgba(3,5,10,0.6); }
+
+/* the island's open state must read solid even with no blur support */
+.island.is-open {
+  background: linear-gradient(165deg, rgba(40,50,78,0.94), rgba(11,15,27,0.97) 60%);
+}

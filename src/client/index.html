@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#06080e"/>
+  <meta name="description" content="TETHER — a companion for Fo work. Presence, honest state, recovery."/>
+  <title>tether</title>
+  <link rel="manifest" href="./manifest.webmanifest"/>
+  <link rel="icon" href="./icons/icon-192.png" type="image/png"/>
+  <link rel="apple-touch-icon" href="./icons/icon-192.png"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <link rel="stylesheet" href="./assets/fonts/fonts.css"/>
+  <link rel="stylesheet" href="./styles/tokens.css"/>
+  <link rel="stylesheet" href="./styles/base.css"/>
+  <link rel="stylesheet" href="./styles/glass.css"/>
+  <link rel="stylesheet" href="./styles/app.css"/>
+  <link rel="stylesheet" href="./pip/pip.css"/>
+  <link rel="stylesheet" href="./island/island.css"/>
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <!-- persistent presence: the island is on every screen -->
+  <div id="island" class="island glass glass--capsule" role="button" tabindex="0"
+       aria-expanded="false" aria-label="TETHER presence — current run state"></div>
+
+  <div id="app">
+    <aside class="rail">
+      <div class="wordmark-slot"></div>
+      <nav class="rail-nav" aria-label="Primary">
+        <a class="tab" data-tab="runs" href="#/runs">
+          <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><path d="M2 8.5 C 5 3, 8 14, 11 8.5 S 15 4, 15 6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Runs
+        </a>
+        <a class="tab" data-tab="devices" href="#/devices">
+          <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><rect x="2" y="2" width="5.4" height="5.4" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="9.6" y="2" width="5.4" height="5.4" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="9.6" width="5.4" height="5.4" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12.3" cy="12.3" r="2.9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          Devices
+        </a>
+        <a class="tab" data-tab="settings" href="#/settings">
+          <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="8.5" cy="8.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 1.8 v2.4 M8.5 12.8 v2.4 M1.8 8.5 h2.4 M12.8 8.5 h2.4 M3.8 3.8 l1.7 1.7 M11.5 11.5 l1.7 1.7 M13.2 3.8 l-1.7 1.7 M5.5 11.5 l-1.7 1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Connections
+        </a>      </nav>
+      <div class="rail-foot">
+        <p class="mono">TETHER · unofficial companion<br/>for Fo (Wajo hackathon build)</p>
+        <a href="../../LICENSE">MIT License</a> · <a href="../../THIRD-PARTY-NOTICES">Third-party notices</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="screen-pad-top" aria-hidden="true"></div>
+      <header class="topbar">
+        <div class="wordmark-slot"></div>
+      </header>
+      <div id="screen" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <nav class="tabs" aria-label="Primary">
+    <a class="tab" data-tab="runs" href="#/runs">
+      <svg width="19" height="19" viewBox="0 0 17 17" aria-hidden="true"><path d="M2 8.5 C 5 3, 8 14, 11 8.5 S 15 4, 15 6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      Runs
+    </a>
+        <a class="tab" data-tab="devices" href="#/devices">
+          <svg width="19" height="19" viewBox="0 0 17 17" aria-hidden="true"><rect x="2" y="2" width="5.4" height="5.4" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="9.6" y="2" width="5.4" height="5.4" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="9.6" width="5.4" height="5.4" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12.3" cy="12.3" r="2.9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          Devices
+        </a>
+    <a class="tab" data-tab="settings" href="#/settings">
+      <svg width="19" height="19" viewBox="0 0 17 17" aria-hidden="true"><circle cx="8.5" cy="8.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 1.8 v2.4 M8.5 12.8 v2.4 M1.8 8.5 h2.4 M12.8 8.5 h2.4 M3.8 3.8 l1.7 1.7 M11.5 11.5 l1.7 1.7 M13.2 3.8 l-1.7 1.7 M5.5 11.5 l-1.7 1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Connections
+    </a>  </nav>
+
+  <div id="sheet-host"></div>
+
+  <script type="module" src="./app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>

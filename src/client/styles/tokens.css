@@ -1,0 +1,70 @@
+/* ============================================================
+   TETHER design tokens
+   One source of truth for color, type, space, radius, motion.
+   Dark-first "calm instrument" surface. Thread = the metaphor.
+   ============================================================ */
+
+:root {
+  /* ---- ink scale (surfaces) ---- */
+  --ink-0: #06080e;            /* page */
+  --ink-1: #0b0f18;            /* raised */
+  --ink-2: #111625;            /* card */
+  --ink-3: #171d2f;            /* card hover / inset */
+  --ink-line: rgba(226, 233, 255, 0.08);
+  --ink-line-strong: rgba(226, 233, 255, 0.14);
+
+  /* ---- text ---- */
+  --text-0: #f0f3fa;
+  --text-1: #a7b0c6;
+  --text-2: #646e88;
+  --text-faint: #454e66;
+
+  /* ---- state accents (also Pip's mood line) ---- */
+  --st-idle:        #93a1be;
+  --st-notice:      #7cc7e8;
+  --st-thinking:    #57e0c4;
+  --st-needs:       #f2a950;
+  --st-success:     #83dca5;
+  --st-uncertain:   #bfa2ea;
+  --st-sleep:       #4d5770;
+  --st-danger:      #ef7d7d;
+
+  /* ---- glass ---- */
+  --glass-hi: rgba(255, 255, 255, 0.16);
+  --glass-lo: rgba(255, 255, 255, 0.05);
+  --glass-edge: rgba(255, 255, 255, 0.15);
+
+  /* ---- type ---- */
+  --font-display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --font-ui: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, "SF Mono", monospace;
+
+  --fs-hero: clamp(1.65rem, 1.2rem + 2vw, 2.1rem);
+  --fs-title: 1.06rem;
+  --fs-body: 0.94rem;
+  --fs-small: 0.82rem;
+  --fs-micro: 0.72rem;
+
+  /* ---- space ---- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+
+  /* ---- radius ---- */
+  --r-s: 10px; --r-m: 14px; --r-l: 20px; --r-xl: 28px; --r-pill: 999px;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.22, 0.9, 0.26, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.4, 1);
+  --t-fast: 140ms;
+  --t-med: 260ms;
+  --t-slow: 480ms;
+
+  /* ---- elevation ---- */
+  --shadow-1: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.28);
+  --shadow-2: 0 1px 0 rgba(255,255,255,0.05) inset, 0 16px 48px rgba(0,0,0,0.42);
+  --shadow-glass: inset 0 1px 0 rgba(255,255,255,0.22),
+                  inset 0 -1px 0 rgba(2,4,10,0.35),
+                  0 18px 44px rgba(0,0,0,0.38);
+
+  color-scheme: dark;
+}
