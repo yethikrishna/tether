@@ -19,6 +19,7 @@ import { homeConnectorIfConsented, giveConsent, revokeConsent } from './state/de
 import { MqttHomeConnector } from './state/connectors/mqtt.js';
 import { BluetoothConnector } from './state/connectors/bluetooth.js';
 import { HomeAssistantConnector } from './state/connectors/home-assistant.js';
+import { gadgetSim, gadgetChoose, gadgetAllow, gadgetReset } from './state/gadgets.js';
 
 // live connector instances (in-memory only; nothing persists but consent)
 const deviceConnectors = { mqtt: null, bt: {}, ha: null };
@@ -83,6 +84,7 @@ function render() {
       mqtt: deviceConnectors.mqtt,
       ha: deviceConnectors.ha,
       demo,
+      gadgetSimState: gadgetSim(),
     });
   } else if (route.name === 'settings') {
     screen = settingsScreen({
@@ -294,6 +296,14 @@ async function action(name, id) {
     case 'refresh-run': await bridge.refresh(id); await refreshRuns(); return;
     case 'device-open': store.set({ deviceOpen: id }); return;
     case 'device-close': store.set({ deviceOpen: null }); return;
+    case 'gadget-open': gadgetChoose(id); store.set({}); return;
+    case 'gadget-allow': {
+      gadgetAllow();
+      pips.forEach((p) => p.playTransition('glance')); // Pip notices the simulated pairing
+      store.set({});
+      return;
+    }
+    case 'gadget-reset': gadgetReset(); store.set({}); return;
     case 'device-consent': giveConsent(id); store.set({}); return;
     case 'device-revoke':
       revokeConsent(id);

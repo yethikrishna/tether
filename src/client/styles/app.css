@@ -642,7 +642,7 @@
 .device-kind { color: var(--text-faint); font-size: var(--fs-small); }
 .device-live { margin-top: 2px; font-size: 0.76rem; color: var(--text-1); }
 .device-sim { color: var(--st-thinking); }
-.device-panel { margin-top: var(--sp-4); }
+.device-panel { margin-top: var(--sp-4); padding: var(--sp-4); }
 .device-lamp-row {
   display: flex;
   align-items: center;
@@ -659,3 +659,34 @@
 /* device forms (mqtt connect) */
 .device-form { display: flex; flex-direction: column; gap: var(--sp-3); margin-top: var(--sp-3); }
 .device-form .field { display: flex; flex-direction: column; gap: 4px; }
+
+
+/* gadget status panel (simulated) */
+.gadget-status { margin: var(--sp-3) 0; }
+.gadget-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.gadget-status-row dt { color: var(--text-faint); font-size: var(--fs-small); }
+.gadget-status-row dd { margin: 0; font-size: var(--fs-small); color: var(--text-1); text-align: right; max-width: 64%; overflow-wrap: anywhere; }
+
+/* section subtitles + field labels (devices, gadgets) */
+.screen-subtitle {
+  margin: var(--sp-6, 24px) 0 0;
+  font-size: 1.15rem;
+  font-weight: 650;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.field-label {
+  display: block;
+  margin: var(--sp-3) 0 4px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text-1);
+}

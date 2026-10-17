@@ -6,6 +6,7 @@ import { esc } from './common.js';
 import { timeAgo } from '../state/status.js';
 import { DEVICES, consents } from '../state/devices.js';
 import { BluetoothConnector } from '../state/connectors/bluetooth.js';
+import { gadgetsSection, gadgetProfilesCard } from './gadgets-section.js';
 
 const ICONS = {
   home: '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10 L10 3.5 L17 10 M5.2 9.2 V16.5 h9.6 V9.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -21,7 +22,7 @@ function chipFor(d, given, demo) {
   return '<span class="chip" style="--chip:var(--st-thinking)">consent on - pair to connect</span>';
 }
 
-export function devicesScreen({ selected, home, bt, mqtt, ha, demo = false }) {
+export function devicesScreen({ selected, home, bt, mqtt, ha, demo = false, gadgetSimState = { step: 'choose', device: null } }) {
   const cons = consents();
   const tiles = DEVICES.map((d) => {
     const given = Boolean(cons[d.id]);
@@ -47,7 +48,9 @@ export function devicesScreen({ selected, home, bt, mqtt, ha, demo = false }) {
   <h1 class="screen-title">Devices</h1>
   <p class="settings-copy">${demo ? 'This is a simulated public preview. MQTT is the only real connector here, and it dials only the websocket address you type and submit. Bluetooth pairing and Home Assistant are disabled in this preview.' : 'Accounts and devices TETHER can notice. Simulated connectors are labeled simulated everywhere. Real connectors use real libraries (mqtt.js, home-assistant-js-websocket, Web Bluetooth) and connect only to an address you type or a device you pick yourself. Matter stays roadmap: browsers have no Matter transport (no mDNS/Thread/UDP), so a Matter connector cannot run in a web app honestly.'}</p>
   <div class="device-grid">${tiles}</div>
-  ${selected ? devicePanel(selected, { home, bt, mqtt, ha, demo }, cons) : ''}`;
+  ${selected ? devicePanel(selected, { home, bt, mqtt, ha, demo }, cons) : ''}
+  ${gadgetProfilesCard()}
+  ${gadgetsSection({ sim: gadgetSimState })}`;
 }
 
 function demoHomeConsent(device, demo) {
