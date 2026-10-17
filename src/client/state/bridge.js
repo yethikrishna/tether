@@ -190,7 +190,7 @@ export class DemoBridge {
         status: 'complete',
         response: '[simulated Fo] Done. I used the short version and put the result together.',
         conversationId: r.conversationId,
-      }, { pollSequence: 2, now: now() });
+      }, { pollSequence: r.pollSequence + 1, now: now() });
     });
   }
 

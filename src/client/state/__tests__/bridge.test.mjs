@@ -33,6 +33,26 @@ test('answering resumes the same conversation and completes Fo-reported', async 
   assert.equal(cur.answerCount, 1);
 });
 
+test('reload+resume mid-run still reaches completed after answering (regression: stale hardcoded poll sequence)', async () => {
+  shimLocalStorage();
+  const b = new DemoBridge({ timings: { ...FAST, waitingPrompt: 100_000 } });
+  const run = await b.createRun('Plan the Saturday route');
+  await sleep(25);                           // initial reply, still working, no polls yet
+  await b.simulateInterruption(run.id);      // user reloads; run restored as interrupted
+  await b.refresh(run.id);                   // read-only resume consumes poll 1, resume prompt poll 2
+  await sleep(FAST.resumePrompt + 30);
+  let cur = (await b.listRuns()).find((r) => r.id === run.id);
+  assert.equal(cur.status, APP_STATUS.WAITING_FOR_USER, 'resume prompt asks the question');
+  assert.equal(cur.pollSequence, 2, 'resume arc consumed polls 1 and 2');
+  await b.answer(run.id, 'Short version is fine.');
+  await sleep(FAST.answerComplete + 30);
+  cur = (await b.listRuns()).find((r) => r.id === run.id);
+  assert.equal(cur.status, APP_STATUS.COMPLETED, 'resumed run must still complete');
+  assert.equal(cur.outcomeEvidence, 'fo_reported');
+  assert.equal(cur.conversationId, `demo-cid-${run.id.slice(0, 8)}`, 'same conversation throughout');
+  b.destroy();
+});
+
 test('interruption is on TETHERs side; resume is read-only on the same conversation', async () => {
   const b = new DemoBridge({ timings: { ...FAST, initialReply: 5, waitingPrompt: 100_000, resumePrompt: 100_000 } });
   const run = await b.createRun('Check the weather for Saturday');

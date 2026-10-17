@@ -1,6 +1,6 @@
 /* Preview service worker: cache-first for static shell assets,
    network-only for anything that looks like an API call. */
-const CACHE = 'tether-shell-v2';
+const CACHE = 'tether-shell-v3';
 const ASSETS = [
   './index.html', './app.js', './manifest.webmanifest',
   './styles/tokens.css', './styles/base.css', './styles/glass.css', './styles/app.css',
